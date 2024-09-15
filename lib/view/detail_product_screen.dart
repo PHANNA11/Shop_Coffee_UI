@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shop_up/model/product_model.dart';
 import 'package:shop_up/view/home_screen.dart';
 
+import '../controller/list_cart_controller.dart';
+
 class DetailProductScreen extends StatefulWidget {
   DetailProductScreen({super.key, required this.pro});
-  ProductModel? pro; 
+  ProductModel? pro;
   // Data member
 
   @override
@@ -14,6 +17,7 @@ class DetailProductScreen extends StatefulWidget {
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
   int qty = 1;
+  final listCartController = Get.put(ListCartController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,10 +154,21 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
             Expanded(
               flex: 2,
               child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.pro!.qty = qty;
-                    listCart.add(widget.pro!);
+                onTap: () async {
+                  widget.pro!.qty = qty;
+
+                  listCartController.addToCart(pro: widget.pro!).then((value) {
+                    //   Get.defaultDialog(
+                    //       titlePadding: const EdgeInsets.all(10),
+                    //       title: 'PRODUCT',
+                    //       middleText: 'Product was add to cart sucees',
+                    //       confirm: CupertinoButton(
+                    //         color: Colors.blue,
+                    //         child: const Text('OK'),
+                    //         onPressed: () {
+                    //           Get.back();
+                    //         },
+                    //       ));
                   });
                 },
                 child: const Row(

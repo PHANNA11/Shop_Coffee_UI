@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shop_up/model/product_model.dart';
 import 'package:shop_up/view/home_screen.dart';
+
+import '../controller/list_cart_controller.dart';
 
 class ListCartScreen extends StatefulWidget {
   const ListCartScreen({super.key});
@@ -12,14 +15,15 @@ class ListCartScreen extends StatefulWidget {
 }
 
 class _ListCartScreenState extends State<ListCartScreen> {
+  final listCartController = Get.put(ListCartController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: ListView.builder(
-        itemCount: listCart.length,
-        itemBuilder: (context, index) =>
-            buildCardProduct(pro: listCart[index], index: index),
+        itemCount: listCartController.listProducts.length,
+        itemBuilder: (context, index) => buildCardProduct(
+            pro: listCartController.listProducts[index], index: index),
       ),
     );
   }

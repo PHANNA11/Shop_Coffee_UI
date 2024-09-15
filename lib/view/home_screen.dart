@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
+import 'package:shop_up/controller/list_cart_controller.dart';
 import 'package:shop_up/model/product_model.dart';
 import 'package:shop_up/view/detail_product_screen.dart';
 import 'package:shop_up/view/list_cart_screen.dart';
@@ -18,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isFav = false;
   final listProducts = ProductModel().products;
   List<ProductModel> filterList = [];
+  final listCartController = Get.put(ListCartController());
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -29,22 +33,25 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Center(
             child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ListCartScreen(),
-                    ));
-              },
-              child: badges.Badge(
-                showBadge: listCart.isEmpty ? false : true,
-                badgeContent: Text(listCart.length.toString()),
-                child: const Icon(
-                  Icons.shopping_cart,
-                  size: 30,
-                ),
-              ),
-            ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ListCartScreen(),
+                      ));
+                },
+                child: Obx(
+                  () => badges.Badge(
+                    showBadge:
+                        listCartController.listProducts.isEmpty ? false : true,
+                    badgeContent:
+                        Text(listCartController.listProducts.length.toString()),
+                    child: const Icon(
+                      Icons.shopping_cart,
+                      size: 30,
+                    ),
+                  ),
+                )),
           ),
           const SizedBox(
             width: 20,
