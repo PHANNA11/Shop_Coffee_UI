@@ -5,7 +5,8 @@ import 'package:shop_up/view/home_screen.dart';
 
 class DetailProductScreen extends StatefulWidget {
   DetailProductScreen({super.key, required this.pro});
-  ProductModel? pro;
+  ProductModel? pro; 
+  // Data member
 
   @override
   State<DetailProductScreen> createState() => _DetailProductScreenState();
