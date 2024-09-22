@@ -20,11 +20,15 @@ class _ListCartScreenState extends State<ListCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.builder(
-        itemCount: listCartController.listProducts.length,
-        itemBuilder: (context, index) => buildCardProduct(
-            pro: listCartController.listProducts[index], index: index),
-      ),
+      body: GetBuilder<ListCartController>(
+          init: listCartController,
+          builder: (context) {
+            return ListView.builder(
+              itemCount: listCartController.listProducts.length,
+              itemBuilder: (context, index) => buildCardProduct(
+                  pro: listCartController.listProducts[index], index: index),
+            );
+          }),
     );
   }
 
@@ -79,12 +83,8 @@ class _ListCartScreenState extends State<ListCartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
-                      onTap: () {
-                        if ((listCart[index].qty!) > 1) {
-                          setState(() {
-                            listCart[index].qty! - 1;
-                          });
-                        }
+                      onTap: () async {
+                        listCartController.decreaseQty(index: index);
                       },
                       child: Container(
                         height: 30,
@@ -111,11 +111,8 @@ class _ListCartScreenState extends State<ListCartScreen> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          listCart[index].qty! + 1;
-                        });
-                        log(qty.toString());
+                      onTap: () async {
+                        listCartController.increaseQty(index: index);
                       },
                       child: Container(
                         height: 30,
